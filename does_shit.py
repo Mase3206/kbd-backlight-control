@@ -1,5 +1,15 @@
-import subprocess
+import subprocess, sys
 
+
+if __name__ == "__main__":
+    print("This program should not be run directly. Exiting...")
+    exit(1)
+
+
+
+
+s_err = sys.stderr
+s_in = sys.stdin
 
 def current_brightness():
     current = open("/sys/class/leds/kbd_backlight/brightness", "rt")
@@ -27,11 +37,9 @@ def set_brightness(value):
         bright = open("/sys/class/leds/kbd_backlight/brightness", "rw")
         bright.write(str(value))
     except:
-        raise Exception("Tried to write passed value to unwritable file. Check permissions?")
+        s_err.write("Tried to write keyboard brightness value to unwritable file. Check permissions?")
+        raise Exception("Tried to write keyboard brightness value to unwritable file. Check permissions?")
     else:
         return str(value)
     finally:
         bright.close()
-    
-
-
