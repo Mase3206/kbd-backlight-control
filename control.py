@@ -12,7 +12,9 @@ modes = {
     "?": 3
 }
 mode = modes[s_in[0]]
-value = int(s_in[1] / 100 * 255)
+max = does_shit.max_brightness()
+value = int(s_in[1] / 100 * max)
+
 
 if mode == 3:
     print("""
@@ -30,6 +32,27 @@ if mode == 3:
           Keyboard Brightness Controller is subject to copyright under the GNU General Public License (v3). See LICENSE for details.
     """)
 
+
 if mode == 2:
-    does_shit.set_brightness(value)
-    
+    output = does_shit.set_brightness(value)
+    if output < 0:
+        s_err.write("ERROR: failed to write brightness value to file")
+        raise Exception("ERROR: failed to write brightness value to file")
+    else:
+        print(output)
+
+
+if mode == 1:
+    current = does_shit.current_brightness()
+    if current + value <= max:
+        does_shit.set_brightness(value)
+    else:
+        does_shit.set_brightness(255)
+
+
+if mode == 0:
+    current = does_shit.current_brightness()
+    if current - value >= 0:
+        does_shit.set_brightness(value)
+    else:
+        does_shit.set_brightness(0)

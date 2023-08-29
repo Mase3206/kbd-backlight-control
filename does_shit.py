@@ -33,7 +33,7 @@ def set_brightness(value):
         bright = open("/sys/class/leds/kbd_backlight/brightness", "rw")
         bright.write(str(value))
     except:
-        return "ERROR: failed to write brightness value to file"
+        return -1
     else:
         return str(value)
     finally:
